@@ -12,7 +12,7 @@ function getBasePath() {
 
 function getAlbumsPath(path = '') {
   const basePath = getBasePath();
-  const albumsPath = `${basePath}/Albums/${path}`.replace(/\/+/g, '/');
+  const albumsPath = `${basePath}/public/Albums/${path}`.replace(/\/+/g, '/');
   return albumsPath.startsWith('/') ? albumsPath : '/' + albumsPath;
 }
 
