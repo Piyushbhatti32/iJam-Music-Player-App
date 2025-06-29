@@ -1,5 +1,24 @@
 // ===== iJAM MUSIC PLAYER - MAIN SCRIPT =====
 
+// ===== GITHUB PAGES PATH UTILITIES =====
+
+// Dynamic base path utility for GitHub Pages compatibility
+function getBasePath() {
+  const isProduction = location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
+  return isProduction && location.pathname !== '/' 
+    ? location.pathname.replace(/\/$/, '') 
+    : '';
+}
+
+function getAlbumsPath(path = '') {
+  const basePath = getBasePath();
+  const albumsPath = `${basePath}/Albums/${path}`.replace(/\/+/g, '/');
+  return albumsPath.startsWith('/') ? albumsPath : '/' + albumsPath;
+}
+
+console.log('🌐 Base path:', getBasePath());
+console.log('🎵 Albums path:', getAlbumsPath());
+
 // ===== 1. CORE CLASSES =====
 
 class Album {
@@ -369,7 +388,7 @@ class AppState {
     
     try {
       // First, try to load the albums.json file that lists all available albums
-      const albumsListResponse = await fetch('./Albums/albums.json');
+      const albumsListResponse = await fetch(getAlbumsPath('albums.json'));
       if (albumsListResponse.ok) {
         const albumsList = await albumsListResponse.json();
         console.log('📋 Found albums.json file:', albumsList);
@@ -394,7 +413,7 @@ class AppState {
     
     try {
       // Try directory listing approach
-      const response = await fetch('./Albums/');
+      const response = await fetch(getAlbumsPath());
       if (response.ok) {
         const html = await response.text();
         
@@ -411,7 +430,7 @@ class AppState {
               
               // Verify this is a valid album directory
               try {
-                const albumResponse = await fetch(`./Albums/${dirName}/album.json`);
+                const albumResponse = await fetch(getAlbumsPath(`${dirName}/album.json`));
                 if (albumResponse.ok) {
                   const data = await albumResponse.json();
                   if (data && data.id && data.title && data.artist) {
@@ -465,7 +484,7 @@ class AppState {
 
           for (const jsonFile of possibleJsonFiles) {
             try {
-              albumResponse = await fetch(`./Albums/${albumDir}/${jsonFile}`);
+              albumResponse = await fetch(getAlbumsPath(`${albumDir}/${jsonFile}`));
               if (albumResponse.ok) {
                 albumData = await albumResponse.json();
                 console.log(`  ✅ Successfully loaded: ${jsonFile}`);
@@ -495,7 +514,7 @@ class AppState {
             ];
             
             // Try to find the actual cover file that exists
-            coverPath = await this.findCoverImage(albumDir, coverFormats) || `./Albums/${albumDir}/${coverFormats[1]}`;
+            coverPath = await this.findCoverImage(albumDir, coverFormats) || getAlbumsPath(`${albumDir}/${coverFormats[1]}`);
           }
 
           const album = new Album(
@@ -534,7 +553,7 @@ class AppState {
               // Store song metadata with explicit file path from JSON
               song.setMetadata({
                 explicit: songData.explicit || false,
-                filePath: songData.file ? `./Albums/${albumDir}/${songData.file}` : null,
+                filePath: songData.file ? getAlbumsPath(`${albumDir}/${songData.file}`) : null,
               });
               album.addSong(song);
             });
@@ -928,7 +947,7 @@ class AudioPlayerManager {
     
     // Try each pattern by attempting to fetch the file
     for (const pattern of patterns) {
-      const filePath = `./Albums/${albumDirectory}/${pattern}`;
+      const filePath = getAlbumsPath(`${albumDirectory}/${pattern}`);
       try {
         const response = await fetch(filePath, { method: 'HEAD' });
         if (response.ok) {
@@ -941,14 +960,14 @@ class AudioPlayerManager {
     }
     
     // If no file found, return the most likely pattern as fallback
-    const fallbackPath = `./Albums/${albumDirectory}/${paddedId} - ${song.title}.mp3`;
+    const fallbackPath = getAlbumsPath(`${albumDirectory}/${paddedId} - ${song.title}.mp3`);
     console.warn('🎵 No audio file found, using fallback:', fallbackPath);
     return fallbackPath;
   }
 
   async findCoverImage(albumDirectory, formats) {
     for (const format of formats) {
-      const imagePath = `./Albums/${albumDirectory}/${format}`;
+      const imagePath = getAlbumsPath(`${albumDirectory}/${format}`);
       try {
         const response = await fetch(imagePath, { method: 'HEAD' });
         if (response.ok) {
@@ -967,7 +986,7 @@ class AudioPlayerManager {
     document.getElementById("playerTrackArtist").textContent = song.artist;
 
     const albumArt = document.getElementById("playerAlbumArt");
-    albumArt.src = albumCover || "./Albums/default-cover.jpg";
+    albumArt.src = albumCover || getAlbumsPath("default-cover.jpg");
     albumArt.alt = `${song.title} - ${song.artist}`;
   }
 
