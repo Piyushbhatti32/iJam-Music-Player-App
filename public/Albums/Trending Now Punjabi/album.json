@@ -1,0 +1,416 @@
+{
+    "id": 3,
+    "title": "Trending Now Punjabi",
+    "artist": "Various Artists",
+    "year": "2025",
+    "genre": "Punjabi Pop",
+    "cover": "cover.png",
+    "description": "All that's viral in Punjabi music right now. Featuring the latest hits and trending artists.",
+    "rating": 4.7,
+    "totalTracks": 50,
+    "songs": [
+        {
+            "id": 1,
+            "title": "At Peace",
+            "artist": "Karan Aujla",
+            "duration": "2:37",
+            "explicit": false,
+            "file": "At Peace - Karan Aujla.mp3"
+        },
+        {
+            "id": 2,
+            "title": "Sukh Saand",
+            "artist": "Gulab Sidhu",
+            "duration": "4:09",
+            "explicit": false,
+            "file": "Sukh Saand - Gulab Sidhu.mp3"
+        },
+        {
+            "id": 3,
+            "title": "STFU",
+            "artist": "AP Dhillon",
+            "duration": "2:54",
+            "explicit": false,
+            "file": "STFU - AP Dhillon.mp3"
+        },
+        {
+            "id": 4,
+            "title": "Neal",
+            "artist": "Sidhu Moose Wala",
+            "duration": "3:20",
+            "explicit": false,
+            "file": "Neal - Sidhu Moose Wala.mp3"
+        },
+        {
+            "id": 5,
+            "title": "Hanju",
+            "artist": "Pardeep Sran",
+            "duration": "2:49",
+            "explicit": false,
+            "file": "Hanju - Pardeep Sran.mp3"
+        },
+        {
+            "id": 6,
+            "title": "Take Notes",
+            "artist": "Sidhu Moose Wala",
+            "duration": "3:36",
+            "explicit": false,
+            "file": "Take Notes - Sidhu Moose Wala.mp3"
+        },
+        {
+            "id": 7,
+            "title": "Garroor",
+            "artist": "Gulab Sidhu",
+            "duration": "2:48",
+            "explicit": false,
+            "file": "Garroor - Gulab Sidhu.mp3"
+        },
+        {
+            "id": 8,
+            "title": "Courtside (Original)",
+            "artist": "Karan Aujla",
+            "duration": "2:48",
+            "explicit": false,
+            "file": "Courtside (Original) - Karan Aujla.mp3"
+        },
+        {
+            "id": 9,
+            "title": "0008",
+            "artist": "Sidhu Moose Wala",
+            "duration": "2:12",
+            "explicit": false,
+            "file": "0008 - Sidhu Moose Wala.mp3"
+        },
+        {
+            "id": 10,
+            "title": "Big Things",
+            "artist": "Jordan Sandhu",
+            "duration": "2:18",
+            "explicit": false,
+            "file": "Big Things - Jordan Sandhu.mp3"
+        },
+        {
+            "id": 11,
+            "title": "Courtside",
+            "artist": "Karan Aujla",
+            "duration": "2:48",
+            "explicit": false,
+            "file": "Courtside - Karan Aujla.mp3"
+        },
+        {
+            "id": 12,
+            "title": "Sakoon",
+            "artist": "G Khan",
+            "duration": "4:02",
+            "explicit": false,
+            "file": "Sakoon - G Khan.mp3"
+        },
+        {
+            "id": 13,
+            "title": "Drivery Anthem",
+            "artist": "G Khan",
+            "duration": "2:56",
+            "explicit": false,
+            "file": "Drivery Anthem - G Khan.mp3"
+        },
+        {
+            "id": 14,
+            "title": "Jatt Nahi Dekhya",
+            "artist": "Saabi Bhinder",
+            "duration": "2:27",
+            "explicit": false,
+            "file": "Jatt Nahi Dekhya - Saabi Bhinder.mp3"
+        },
+        {
+            "id": 15,
+            "title": "Main Nachdi",
+            "artist": "Nimrat Khaira",
+            "duration": "2:55",
+            "explicit": false,
+            "file": "Main Nachdi - Nimrat Khaira.mp3"
+        },
+        {
+            "id": 16,
+            "title": "College",
+            "artist": "Pardeep Sran",
+            "duration": "2:58",
+            "explicit": false,
+            "file": "College - Pardeep Sran.mp3"
+        },
+        {
+            "id": 17,
+            "title": "Ruthless",
+            "artist": "Diljit Dosanjh",
+            "duration": "3:02",
+            "explicit": false,
+            "file": "Ruthless - Diljit Dosanjh.mp3"
+        },
+        {
+            "id": 18,
+            "title": "Gods Grace (feat. Gurlej Akhtar)",
+            "artist": "Jordan Sandhu",
+            "duration": "2:42",
+            "explicit": false,
+            "file": "Gods Grace (feat. Gurlej Akhtar) - Jordan Sandhu.mp3"
+        },
+        {
+            "id": 19,
+            "title": "Zulfaan",
+            "artist": "Jigar",
+            "duration": "3:05",
+            "explicit": false,
+            "file": "Zulfaan - Jigar.mp3"
+        },
+        {
+            "id": 20,
+            "title": "Zor",
+            "artist": "Rajvir Jawanda",
+            "duration": "1:57",
+            "explicit": false,
+            "file": "Zor - Rajvir Jawanda.mp3"
+        },
+        {
+            "id": 21,
+            "title": "Jatt Jatt Jatt",
+            "artist": "Dilpreet Dhillon",
+            "duration": "3:00",
+            "explicit": false,
+            "file": "Jatt Jatt Jatt - Dilpreet Dhillon.mp3"
+        },
+        {
+            "id": 22,
+            "title": "Banda Bamb",
+            "artist": "Jordan Sandhu",
+            "duration": "2:54",
+            "explicit": false,
+            "file": "Banda Bamb - Jordan Sandhu.mp3"
+        },
+        {
+            "id": 23,
+            "title": "Superstar",
+            "artist": "Jaskaran",
+            "duration": "3:01",
+            "explicit": false,
+            "file": "Superstar - Jaskaran.mp3"
+        },
+        {
+            "id": 24,
+            "title": "My World 2",
+            "artist": "Raman Lakhesar",
+            "duration": "3:02",
+            "explicit": false,
+            "file": "My World 2 - Raman Lakhesar.mp3"
+        },
+        {
+            "id": 25,
+            "title": "Yaar Punjabi Anthem",
+            "artist": "Gurdas Maan",
+            "duration": "3:12",
+            "explicit": false,
+            "file": "Yaar Punjabi Anthem - Gurdas Maan.mp3"
+        },
+        {
+            "id": 26,
+            "title": "Pasand",
+            "artist": "Shree Brar",
+            "duration": "2:19",
+            "explicit": false,
+            "file": "Pasand - Shree Brar.mp3"
+        },
+        {
+            "id": 27,
+            "title": "Gorgeous",
+            "artist": "Ranjit Bawa",
+            "duration": "2:47",
+            "explicit": false,
+            "file": "Gorgeous - Ranjit Bawa.mp3"
+        },
+        {
+            "id": 28,
+            "title": "25 26",
+            "artist": "Jass Bajwa",
+            "duration": "2:45",
+            "explicit": false,
+            "file": "25 26 - Jass Bajwa.mp3"
+        },
+        {
+            "id": 29,
+            "title": "Ambran Da Jaya",
+            "artist": "Sajjan Adeeb",
+            "duration": "2:34",
+            "explicit": false,
+            "file": "Ambran Da Jaya - Sajjan Adeeb.mp3"
+        },
+        {
+            "id": 30,
+            "title": "Akh Gabru Di",
+            "artist": "Hustinder",
+            "duration": "2:33",
+            "explicit": false,
+            "file": "Akh Gabru Di - Hustinder.mp3"
+        },
+        {
+            "id": 31,
+            "title": "Cham Cham",
+            "artist": "Kaka",
+            "duration": "3:13",
+            "explicit": false,
+            "file": "Cham Cham - Kaka.mp3"
+        },
+        {
+            "id": 32,
+            "title": "Salok Mahalla 9",
+            "artist": "Tarsem Jassar",
+            "duration": "4:20",
+            "explicit": false,
+            "file": "Salok Mahalla 9 - Tarsem Jassar.mp3"
+        },
+        {
+            "id": 33,
+            "title": "Tu Sadi Jani Ae",
+            "artist": "Simar Kaur",
+            "duration": "2:40",
+            "explicit": false,
+            "file": "Tu Sadi Jani Ae - Simar Kaur.mp3"
+        },
+        {
+            "id": 34,
+            "title": "C.R.E.A.M POSSE",
+            "artist": "Baggh-E SMG",
+            "duration": "3:25",
+            "explicit": false,
+            "file": "C.R.E.A.M POSSE - Baggh-E SMG.mp3"
+        },
+        {
+            "id": 35,
+            "title": "Vibe",
+            "artist": "Guru Randhawa",
+            "duration": "2:48",
+            "explicit": false,
+            "file": "Vibe - Guru Randhawa.mp3"
+        },
+        {
+            "id": 36,
+            "title": "Lekhaan",
+            "artist": "Kamal Khan",
+            "duration": "3:50",
+            "explicit": false,
+            "file": "Lekhaan - Kamal Khan.mp3"
+        },
+
+        {
+            "id": 37,
+            "title": "Aar Ya Paar",
+            "artist": "Tarsem Jassar",
+            "duration": "2:36",
+            "explicit": false,
+            "file": "Aar Ya Paar - Tarsem Jassar.mp3"
+        },
+        {
+            "id": 38,
+            "title": "Chit Ni Lagda",
+            "artist": "Hustinder",
+            "duration": "4:06",
+            "explicit": false,
+            "file": "Chit Ni Lagda - Hustinder.mp3"
+        },
+        {
+            "id": 39,
+            "title": "Chup",
+            "artist": "Surjit Bhullar",
+            "duration": "4:15",
+            "explicit": false,
+            "file": "Chup - Surjit Bhullar.mp3"
+        },
+        {
+            "id": 40,
+            "title": "Pasoorian",
+            "artist": "Diljit Dosanjh",
+            "duration": "2:40",
+            "explicit": false,
+            "file": "Pasoorian - Diljit Dosanjh.mp3"
+        },
+        {
+            "id": 41,
+            "title": "Jindey",
+            "artist": "Arjan Dhillon",
+            "duration": "3:36",
+            "explicit": false,
+            "file": "Jindey - Arjan Dhillon.mp3"
+        },
+        {
+            "id": 42,
+            "title": "Maa Di Photo",
+            "artist": "Jorge Gill",
+            "duration": "4:17",
+            "explicit": false,
+            "file": "Maa Di Photo - Jorge Gill.mp3"
+        },
+        {
+            "id": 43,
+            "title": "Sunakhiye",
+            "artist": "Ekam Sudhar",
+            "duration": "3:04",
+            "explicit": false,
+            "file": "Sunakhiye - Ekam Sudhar.mp3"
+        },
+        {
+            "id": 44,
+            "title": "Mere Baapu Warga",
+            "artist": "Prabh Gill",
+            "duration": "2:59",
+            "explicit": false,
+            "file": "Mere Baapu Warga - Prabh Gill.mp3"
+        },
+        {
+            "id": 45,
+            "title": "Born King",
+            "artist": "Gurlluv",
+            "duration": "2:40",
+            "explicit": false,
+            "file": "Born King - Gurlluv.mp3"
+        },
+        {
+            "id": 46,
+            "title": "Memento",
+            "artist": "Shivjot",
+            "duration": "2:52",
+            "explicit": false,
+            "file": "Memento - Shivjot.mp3"
+        },
+
+        {
+            "id": 47,
+            "title": "9 BANDDE",
+            "artist": "Maud",
+            "duration": "2:20",
+            "explicit": false,
+            "file": "9 BANDDE - Maud.mp3"
+        },
+        {
+            "id": 48,
+            "title": "Haye Baby",
+            "artist": "Karan Randhawa",
+            "duration": "2:22",
+            "explicit": false,
+            "file": "Haye Baby - Karan Randhawa.mp3"
+        },
+        {
+            "id": 49,
+            "title": "Gal Dil Di",
+            "artist": "Gursewak Pakhoke",
+            "duration": "3:12",
+            "explicit": false,
+            "file": "Gal Dil Di - Gursewak Pakhoke.mp3"
+        },
+        {
+            "id": 50,
+            "title": "Teri Bhenki",
+            "artist": "Indeep Bakshi",
+            "duration": "2:25",
+            "explicit": false,
+            "file": "Teri Bhenki - Indeep Bakshi.mp3"
+        }
+    ]
+}
+  
