@@ -501,10 +501,12 @@ class AppState {
           }
 
           // Handle different cover image formats
-          let coverPath = albumData.cover;
-          if (!coverPath.startsWith("/")) {
+          let coverPath;
+          if (albumData.cover) {
+            // If cover is specified in JSON, use it with proper path
+            coverPath = getAlbumsPath(`${albumDir}/${albumData.cover}`);
+          } else {
             // Try different common cover image formats
-            // Try multiple cover image formats dynamically
             const coverFormats = [
               "cover.webp",
               "cover.jpg", 

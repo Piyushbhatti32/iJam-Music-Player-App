@@ -4,7 +4,7 @@
     "artist": "Ed Sheeran",
     "year": "2017",
     "genre": "Pop",
-    "cover": "/Albums/Divide/cover.jpg",
+    "cover": "cover.jpg",
     "description": "The third studio album by English singer-songwriter Ed Sheeran, featuring hit singles like 'Shape of You' and 'Perfect'.",
     "rating": 4.8,
     "totalTracks": 12,
