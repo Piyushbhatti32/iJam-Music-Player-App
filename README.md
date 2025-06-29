@@ -57,8 +57,8 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/ijam-music-player.git
-   cd ijam-music-player
+   git clone https://github.com/yourusername/iJam-Music-Player-App.git
+   cd iJam-Music-Player-App
    ```
 
 2. **Set up your music library**
@@ -99,7 +99,7 @@
 ## 📁 Project Structure
 
 ```
-iJam-Music-Player/
+iJam-Music-Player-App/
 ├── 📄 index.html           # Main application HTML
 ├── 🎨 style.css            # Core styling and themes
 ├── 🔧 utility.css          # Utility classes and helpers
@@ -318,16 +318,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- [Live Demo](https://yourusername.github.io/ijam-music-player)
-- [Issues](https://github.com/yourusername/ijam-music-player/issues)
-- [Discussions](https://github.com/yourusername/ijam-music-player/discussions)
+- [Live Demo](https://piyushbhatti32.github.io/iJam-Music-Player-App/)
+- [Issues](https://github.com/piyushbhatti32/iJam-Music-Player-App/issues)
+- [Discussions](https://github.com/piyushbhatti32/iJam-Music-Player-App/discussions)
 
 ---
 
 <div align="center">
 
-**Made with ❤️ and lots of ☕**
+**Made with ❤️ by [Piyush]((https://github.com/piyushbhatti32))**
 
-[⭐ Star this repo](https://github.com/yourusername/ijam-music-player) • [🐛 Report Bug](https://github.com/yourusername/ijam-music-player/issues) • [💡 Request Feature](https://github.com/yourusername/ijam-music-player/issues)
+[⭐ Star this repo](https://github.com/piyushbhatti32/iJam-Music-Player-App) • [🐛 Report Bug](https://github.com/piyushbhatti32/iJam-Music-Player-App/issues) • [💡 Request Feature](https://github.com/piyushbhatti32/iJam-Music-Player-App/issues)
 
 </div>

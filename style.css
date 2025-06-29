@@ -3,6 +3,64 @@
 /* ===== 1. FONTS & CSS VARIABLES ===== */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+/* ===== CUSTOM SCROLLBARS ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Specific scrollbar styling for content areas */
+.dropdown-content::-webkit-scrollbar,
+.queue-list::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar,
+.main-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dropdown-content::-webkit-scrollbar-track,
+.queue-list::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track,
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb,
+.queue-list::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover,
+.queue-list::-webkit-scrollbar-thumb:hover,
+.modal-content::-webkit-scrollbar-thumb:hover,
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 :root {
   /* Light theme */
   --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -440,6 +498,15 @@ nav h2 a {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .sidebar.open {
@@ -1533,7 +1600,7 @@ nav h2 a {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 12px 8px;
+  padding: 20px 2px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
@@ -1549,14 +1616,14 @@ nav h2 a {
 .vertical-slider {
   writing-mode: vertical-lr;
   direction: rtl;
-  width: 100px;
-  height: 30px;
+  width: 20px;
+  height: 100px;
   margin-bottom: 8px;
   background: var(--border-color);
   border-radius: 15px;
   outline: none;
   cursor: pointer;
-  transform: rotate(180deg);
+  transform: rotate(360deg);
 }
 
 .vertical-slider::-webkit-slider-thumb {

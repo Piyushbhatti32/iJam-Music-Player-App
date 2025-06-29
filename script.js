@@ -369,7 +369,7 @@ class AppState {
     
     try {
       // First, try to load the albums.json file that lists all available albums
-      const albumsListResponse = await fetch('/Albums/albums.json');
+      const albumsListResponse = await fetch('./Albums/albums.json');
       if (albumsListResponse.ok) {
         const albumsList = await albumsListResponse.json();
         console.log('📋 Found albums.json file:', albumsList);
@@ -394,7 +394,7 @@ class AppState {
     
     try {
       // Try directory listing approach
-      const response = await fetch('/Albums/');
+      const response = await fetch('./Albums/');
       if (response.ok) {
         const html = await response.text();
         
@@ -411,7 +411,7 @@ class AppState {
               
               // Verify this is a valid album directory
               try {
-                const albumResponse = await fetch(`/Albums/${dirName}/album.json`);
+                const albumResponse = await fetch(`./Albums/${dirName}/album.json`);
                 if (albumResponse.ok) {
                   const data = await albumResponse.json();
                   if (data && data.id && data.title && data.artist) {
@@ -465,7 +465,7 @@ class AppState {
 
           for (const jsonFile of possibleJsonFiles) {
             try {
-              albumResponse = await fetch(`/Albums/${albumDir}/${jsonFile}`);
+              albumResponse = await fetch(`./Albums/${albumDir}/${jsonFile}`);
               if (albumResponse.ok) {
                 albumData = await albumResponse.json();
                 console.log(`  ✅ Successfully loaded: ${jsonFile}`);
@@ -495,7 +495,7 @@ class AppState {
             ];
             
             // Try to find the actual cover file that exists
-            coverPath = await this.findCoverImage(albumDir, coverFormats) || `/Albums/${albumDir}/${coverFormats[1]}`;
+            coverPath = await this.findCoverImage(albumDir, coverFormats) || `./Albums/${albumDir}/${coverFormats[1]}`;
           }
 
           const album = new Album(
@@ -534,7 +534,7 @@ class AppState {
               // Store song metadata with explicit file path from JSON
               song.setMetadata({
                 explicit: songData.explicit || false,
-                filePath: songData.file ? `/Albums/${albumDir}/${songData.file}` : null,
+                filePath: songData.file ? `./Albums/${albumDir}/${songData.file}` : null,
               });
               album.addSong(song);
             });
@@ -745,8 +745,29 @@ class AudioPlayerManager {
     console.log('🎵 File path:', filePath);
 
     if (filePath) {
+      // Reset audio element and wait for it to be ready
+      this.audioPlayer.pause();
+      this.audioPlayer.currentTime = 0;
       this.audioPlayer.src = filePath;
       console.log('🎵 Audio src set to:', this.audioPlayer.src);
+      
+      // Wait for audio to load
+      await new Promise((resolve) => {
+        const onCanPlay = () => {
+          this.audioPlayer.removeEventListener('canplay', onCanPlay);
+          this.audioPlayer.removeEventListener('error', onError);
+          resolve();
+        };
+        const onError = () => {
+          this.audioPlayer.removeEventListener('canplay', onCanPlay);
+          this.audioPlayer.removeEventListener('error', onError);
+          resolve(); // Still resolve to continue
+        };
+        this.audioPlayer.addEventListener('canplay', onCanPlay);
+        this.audioPlayer.addEventListener('error', onError);
+        this.audioPlayer.load();
+      });
+      
       this.updatePlayerInfo(song, albumCover);
       this.showPlayerBar();
       this.updateQueueDisplay(); // Use new queue display instead of sidebar queue
@@ -907,7 +928,7 @@ class AudioPlayerManager {
     
     // Try each pattern by attempting to fetch the file
     for (const pattern of patterns) {
-      const filePath = `/Albums/${albumDirectory}/${pattern}`;
+      const filePath = `./Albums/${albumDirectory}/${pattern}`;
       try {
         const response = await fetch(filePath, { method: 'HEAD' });
         if (response.ok) {
@@ -920,14 +941,14 @@ class AudioPlayerManager {
     }
     
     // If no file found, return the most likely pattern as fallback
-    const fallbackPath = `/Albums/${albumDirectory}/${paddedId} - ${song.title}.mp3`;
+    const fallbackPath = `./Albums/${albumDirectory}/${paddedId} - ${song.title}.mp3`;
     console.warn('🎵 No audio file found, using fallback:', fallbackPath);
     return fallbackPath;
   }
 
   async findCoverImage(albumDirectory, formats) {
     for (const format of formats) {
-      const imagePath = `/Albums/${albumDirectory}/${format}`;
+      const imagePath = `./Albums/${albumDirectory}/${format}`;
       try {
         const response = await fetch(imagePath, { method: 'HEAD' });
         if (response.ok) {
@@ -946,7 +967,7 @@ class AudioPlayerManager {
     document.getElementById("playerTrackArtist").textContent = song.artist;
 
     const albumArt = document.getElementById("playerAlbumArt");
-    albumArt.src = albumCover || "/Albums/default-cover.jpg";
+    albumArt.src = albumCover || "./Albums/default-cover.jpg";
     albumArt.alt = `${song.title} - ${song.artist}`;
   }
 
@@ -1092,39 +1113,53 @@ class AudioPlayerManager {
     }
   }
 
-  nextTrack() {
+  async nextTrack() {
+    console.log('🎵 Next track called. Queue length:', this.queue.length, 'Current index:', this.currentQueueIndex);
+    
     if (this.currentQueueIndex < this.queue.length - 1) {
       this.currentQueueIndex++;
       const nextSong = this.queue[this.currentQueueIndex];
-      this.loadSong(nextSong.song, nextSong.albumCover);
+      console.log('🎵 Playing next song:', nextSong.song.title);
+      await this.loadSong(nextSong.song, nextSong.albumCover);
       this.play();
       this.updateQueueDisplay();
       this.saveSession();
     } else if (this.repeatMode === "all" && this.queue.length > 0) {
       this.currentQueueIndex = 0;
       const nextSong = this.queue[this.currentQueueIndex];
-      this.loadSong(nextSong.song, nextSong.albumCover);
+      console.log('🎵 Repeating to first song:', nextSong.song.title);
+      await this.loadSong(nextSong.song, nextSong.albumCover);
       this.play();
       this.updateQueueDisplay();
       this.saveSession();
+    } else {
+      console.log('🎵 No next track available');
+      window.showNotification('No more songs in queue', 'info');
     }
   }
 
-  previousTrack() {
+  async previousTrack() {
+    console.log('🎵 Previous track called. Queue length:', this.queue.length, 'Current index:', this.currentQueueIndex);
+    
     if (this.currentQueueIndex > 0) {
       this.currentQueueIndex--;
       const prevSong = this.queue[this.currentQueueIndex];
-      this.loadSong(prevSong.song, prevSong.albumCover);
+      console.log('🎵 Playing previous song:', prevSong.song.title);
+      await this.loadSong(prevSong.song, prevSong.albumCover);
       this.play();
       this.updateQueueDisplay();
       this.saveSession();
     } else if (this.repeatMode === "all" && this.queue.length > 0) {
       this.currentQueueIndex = this.queue.length - 1;
       const prevSong = this.queue[this.currentQueueIndex];
-      this.loadSong(prevSong.song, prevSong.albumCover);
+      console.log('🎵 Repeating to last song:', prevSong.song.title);
+      await this.loadSong(prevSong.song, prevSong.albumCover);
       this.play();
       this.updateQueueDisplay();
       this.saveSession();
+    } else {
+      console.log('🎵 No previous track available');
+      window.showNotification('Already at first song', 'info');
     }
   }
 
@@ -1132,17 +1167,18 @@ class AudioPlayerManager {
   addToQueue(song, albumCover) {
     const queueItem = { song, albumCover };
     this.queue.push(queueItem);
-    this.updateQueueDisplay();
     this.saveSession();
   }
 
-  clearQueue() {
+  clearQueue(showNotification = true) {
     this.queue = [];
     this.currentQueueIndex = -1;
     this.originalQueue = [];
     this.updateQueueDisplay();
     this.saveSession();
-    window.showNotification('Queue cleared', 'success');
+    if (showNotification) {
+      window.showNotification('Queue cleared', 'success');
+    }
   }
 
   shuffleQueue() {
@@ -1185,7 +1221,12 @@ class AudioPlayerManager {
 
   updateQueueDisplay() {
     const queueList = document.getElementById('queue-list');
-    if (!queueList) return;
+    if (!queueList) {
+      console.warn('🎵 Queue list element not found');
+      return;
+    }
+
+    console.log('🎵 Updating queue display. Queue length:', this.queue.length, 'Current index:', this.currentQueueIndex);
 
     if (this.queue.length === 0) {
       queueList.innerHTML = '<li class="empty-queue">Queue is empty</li>';
@@ -1193,17 +1234,32 @@ class AudioPlayerManager {
     }
 
     queueList.innerHTML = this.queue.map((item, index) => `
-      <li class="queue-item ${index === this.currentQueueIndex ? 'active' : ''}" data-index="${index}">
+      <li class="queue-item ${index === this.currentQueueIndex ? 'active' : ''}" data-index="${index}" onclick="window.audioPlayerManager.playFromQueue(${index})">
         <img src="${item.albumCover || '/default-cover.jpg'}" alt="${item.song.title}" class="queue-item-cover">
         <div class="queue-item-info">
           <div class="queue-item-title">${item.song.title}</div>
           <div class="queue-item-artist">${item.song.artist}</div>
         </div>
-        <button class="queue-item-remove" onclick="window.audioPlayerManager.removeFromQueue(${index})">
+        <button class="queue-item-remove" onclick="event.stopPropagation(); window.audioPlayerManager.removeFromQueue(${index})">
           <i class="fas fa-times"></i>
         </button>
       </li>
     `).join('');
+    
+    console.log('🎵 Queue display updated with', this.queue.length, 'songs');
+  }
+
+  async playFromQueue(index) {
+    if (index < 0 || index >= this.queue.length) return;
+    
+    console.log('🎵 Playing from queue at index:', index);
+    this.currentQueueIndex = index;
+    const queueItem = this.queue[index];
+    
+    await this.loadSong(queueItem.song, queueItem.albumCover);
+    this.play();
+    this.updateQueueDisplay();
+    this.saveSession();
   }
 
   removeFromQueue(index) {
@@ -2044,18 +2100,19 @@ window.selectPlaylist = function (playlistId) {
       case "favorites":
         playlistTitle = "♥ Favorites";
         // Get user's actual favorite songs
+        const actualFavorites = [];
         if (window.appState && window.appState.albums && window.appState.favorites) {
           window.appState.albums.forEach((album) => {
             album.songs.forEach((song) => {
               if (window.appState.isFavorite(song.id)) {
-                playlistContent.push({ song, album });
+                actualFavorites.push({ song, album });
               }
             });
           });
         }
         
-        // Show empty state if no favorites
-        if (playlistContent.length === 0) {
+        // Show empty state if no favorites, but keep actual count
+        if (actualFavorites.length === 0) {
           playlistContent = [{
             song: { 
               id: 'empty', 
@@ -2065,6 +2122,11 @@ window.selectPlaylist = function (playlistId) {
             },
             album: { id: 'empty', title: '', coverUrl: '' }
           }];
+          // Store actual count for display
+          playlistContent.actualCount = 0;
+        } else {
+          playlistContent = actualFavorites;
+          playlistContent.actualCount = actualFavorites.length;
         }
         break;
       case "recently-played":
@@ -2145,7 +2207,7 @@ function displayPlaylistPage(title, songs) {
     <div class="playlist-header">
       <div class="playlist-info">
         <h1>${title}</h1>
-        <p>${songs.length} songs</p>
+        <p>${songs.actualCount !== undefined ? songs.actualCount : songs.length} songs</p>
         <div class="playlist-actions">
           <button class="play-album-btn" onclick="window.playPlaylist()">
             <i class="fas fa-play"></i> Play All
@@ -2524,6 +2586,8 @@ window.playSong = async function (song, albumCover, addToQueue = true) {
         window.audioPlayerManager.addToQueue(song, albumCover);
         window.audioPlayerManager.currentQueueIndex = window.audioPlayerManager.queue.length - 1;
       }
+      // Update queue display after adding
+      window.audioPlayerManager.updateQueueDisplay();
     }
     
     window.audioPlayerManager.play();
@@ -2548,16 +2612,22 @@ window.playSongFromAlbum = async function (songId, albumId) {
 
     console.log("Playing song:", song.title, "from album:", album.title);
     
-    // Add entire album to queue if it's not already there
+    // Always clear queue and add entire album
     const albumCover = album.coverUrl || album.cover;
-    if (window.audioPlayerManager.queue.length === 0) {
-      // Add all songs from album to queue
-      album.songs.forEach(albumSong => {
-        window.audioPlayerManager.addToQueue(albumSong, albumCover);
-      });
-      // Set current song as the one being played
-      window.audioPlayerManager.currentQueueIndex = album.songs.findIndex(s => s.id == songId);
-    }
+    
+    // Clear current queue and add entire album
+    window.audioPlayerManager.clearQueue(false);
+    
+    // Add all songs from album to queue
+    album.songs.forEach(albumSong => {
+      window.audioPlayerManager.addToQueue(albumSong, albumCover);
+    });
+    
+    // Set current song as the one being played
+    window.audioPlayerManager.currentQueueIndex = album.songs.findIndex(s => s.id == songId);
+    
+    // Update queue display
+    window.audioPlayerManager.updateQueueDisplay();
     
     await window.playSong(song, albumCover, false); // Don't add to queue again
     window.showNotification(`Playing: ${song.title}`, "success");
@@ -2575,8 +2645,19 @@ window.playFullAlbum = function (albumId) {
       return;
     }
 
+    // Clear existing queue and add all album songs
+    window.audioPlayerManager.clearQueue();
+    album.songs.forEach(song => {
+      window.audioPlayerManager.addToQueue(song, album.coverUrl || album.cover);
+    });
+    
+    // Set to first song and play
+    window.audioPlayerManager.currentQueueIndex = 0;
     const firstSong = album.songs[0];
-    window.playSong(firstSong, album.coverUrl || album.cover);
+    window.audioPlayerManager.loadSong(firstSong, album.coverUrl || album.cover);
+    window.audioPlayerManager.play();
+    window.audioPlayerManager.updateQueueDisplay();
+    
     window.showNotification(`Playing album: ${album.title}`, "success");
   } catch (error) {
     console.error("Error playing album:", error);
