@@ -142,7 +142,7 @@ body {
   display: none;
   animation: fadeIn 0.3s ease;
   padding: 20px;
-  flex: 1;
+  width: 100vw;
 }
 
 .page.active {
