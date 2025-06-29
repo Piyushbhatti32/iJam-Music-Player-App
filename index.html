@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iJam - Music Player</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Stylesheets -->
+    <link href="style.css" rel="stylesheet" />
+    <link href="utility.css" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <div class="app-container">
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2 class="sidebar-title"><i class="fa fa-music"></i> Music Hub</h2>
+          <button class="sidebar-close" onclick="window.closeSidebar()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Queue Section -->
+        <section class="sidebar-section">
+          <h3><i class="fa fa-play-circle"></i> Now Playing</h3>
+          <div class="queue-controls">
+            <button class="queue-btn" onclick="window.audioPlayerManager.clearQueue()">
+              <i class="fa fa-trash"></i> Clear
+            </button>
+            <button class="queue-btn shuffle-btn" onclick="window.audioPlayerManager.shuffleQueue()">
+              <i class="fa fa-random"></i> Shuffle
+            </button>
+          </div>
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-content">
+              <i class="fas fa-music"></i>
+              <p>Drop songs here to play</p>
+            </div>
+          </div>
+          <ul class="queue-list" id="queue-list">
+            <!-- Queue items will be loaded here -->
+          </ul>
+        </section>
+
+        <!-- Playlists Section -->
+        <section class="sidebar-section">
+          <h3><i class="fa fa-list-ul"></i> My Playlists</h3>
+          <button
+            class="create-playlist-btn"
+            onclick="window.createNewPlaylist()"
+          >
+            <i class="fa fa-plus"></i> Create New Playlist
+          </button>
+          <ul class="playlist-list" id="playlist-list">
+            <li
+              class="playlist-item"
+              onclick="window.selectPlaylist('favorites')"
+            >
+              <i class="fa fa-heart"></i><span>Favorites</span>
+            </li>
+            <li
+              class="playlist-item"
+              onclick="window.selectPlaylist('recently-played')"
+            >
+              <i class="fa fa-clock"></i><span>Recently Played</span>
+            </li>
+            <li class="playlist-item" onclick="window.selectPlaylist('my-mix')">
+              <i class="fa fa-random"></i><span>My Mix</span>
+            </li>
+            <li
+              class="playlist-item"
+              onclick="window.selectPlaylist('chill-vibes')"
+            >
+              <i class="fa fa-leaf"></i><span>Chill Vibes</span>
+            </li>
+          </ul>
+        </section>
+      </aside>
+
+      <!-- ===== MAIN CONTENT ===== -->
+      <main class="main-content" id="main-content">
+        <!-- Navigation Bar -->
+        <nav
+          class="navbar flex flex-row justify-content-between align-items-center"
+        >
+          <div class="nav flex flex-row align-items-center">
+            <button class="sidebar-toggle" onclick="window.toggleSidebar()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="16" rx="2" ry="2" />
+                <line x1="9" y1="4" x2="9" y2="20" />
+                <circle cx="6" cy="7" r="0.6" fill="currentColor" />
+                <circle cx="6" cy="10.5" r="0.6" fill="currentColor" />
+                <circle cx="6" cy="14" r="0.6" fill="currentColor" />
+              </svg>
+            </button>
+
+            <h2 class="title">
+              <a href="/" onclick="window.navigateToHome()">
+                <i class="fa fa-music"></i> iJam
+              </a>
+            </h2>
+
+            <!-- Search Bar -->
+            <div class="search-bar" id="searchBar">
+              <i class="fa fa-search search-icon"></i>
+              <input
+                class="search-input"
+                id="searchInput"
+                type="text"
+                placeholder="What do you want to play?"
+              />
+              <button
+                class="search-button"
+                id="searchButton"
+                onclick="window.toggleSearch()"
+              >
+                <i class="fa fa-search search-open" id="searchOpen"></i>
+                <i class="fa fa-times search-close" id="searchClose"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- User Actions -->
+          <div class="useraction flex flex-row">
+            <div class="reg">
+              <span onclick="window.openLoginModal()"
+                ><i class="fa fa-user"></i> Log in</span
+              >
+              <span onclick="window.openSignupModal()"
+                ><i class="fa fa-user-plus"></i> Sign up</span
+              >
+            </div>
+
+            <button
+              class="refresh-btn"
+              onclick="window.refreshAlbums()"
+              title="Refresh Albums"
+            >
+              <i class="fas fa-sync-alt"></i>
+            </button>
+
+            <div class="theme-switch" onclick="window.toggleTheme()">
+              <button class="day" id="day"><i class="fas fa-sun"></i></button>
+              <button class="night" id="night">
+                <i class="fas fa-moon"></i>
+              </button>
+            </div>
+
+            <div class="hamburger-menu">
+              <i class="fa fa-bars"></i>
+              <div class="menu-items">
+                <a href="#" onclick="window.openLoginModal()">Log in</a>
+                <a href="#" onclick="window.openSignupModal()">Sign up</a>
+                <a href="#" onclick="window.openUploadModal()">Upload Music</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <!-- ===== HOME PAGE ===== -->
+        <section id="home-page" class="page active">
+          <div class="section-title">
+            <i class="fa fa-fire" style="color: white"></i>
+            <span>Trending Now</span>
+          </div>
+
+          <div class="custom-carousel">
+            <div class="carousel-header">
+              <div class="carousel-title">Popular Albums</div>
+            </div>
+            <div class="carousel-container">
+              <div class="carousel-track" id="trending-carousel">
+                <!-- Albums will be loaded here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <i class="fa fa-headphones" style="color: white"></i>
+            <span>Recently Played</span>
+          </div>
+
+          <div class="custom-carousel">
+            <div class="carousel-header">
+              <div class="carousel-title">Your Favorites</div>
+            </div>
+            <div class="carousel-container">
+              <div class="carousel-track" id="recent-carousel">
+                <!-- Albums will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== ALBUM PAGE ===== -->
+        <section id="album-page" class="page">
+          <!-- Content will be dynamically generated by JavaScript -->
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+          <p>&copy; 2025 iJam Music Player. All rights reserved.</p>
+          <button onclick="window.toggleLanguage()">
+            <i class="fa fa-language"></i>
+            <span id="languageText">Language</span>
+          </button>
+        </footer>
+      </main>
+    </div>
+
+    <!-- ===== AUTHENTICATION MODALS ===== -->
+    <div class="modal-overlay" id="authModalOverlay">
+      <!-- Login Modal -->
+      <div class="auth-modal" id="loginModal">
+        <div class="modal-header">
+          <h2><i class="fas fa-user"></i> Login to iJam</h2>
+          <button class="modal-close" onclick="window.closeAuthModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form class="auth-form" id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              required
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" class="auth-btn">Login</button>
+          <p class="auth-switch">
+            Don't have an account?
+            <a href="#" onclick="window.switchToSignup()">Sign up</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- Signup Modal -->
+      <div class="auth-modal" id="signupModal">
+        <div class="modal-header">
+          <h2><i class="fas fa-user-plus"></i> Join iJam</h2>
+          <button class="modal-close" onclick="window.closeAuthModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form class="auth-form" id="signupForm">
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <input
+              type="text"
+              id="signupName"
+              required
+              placeholder="Enter your full name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">Email</label>
+            <input
+              type="email"
+              id="signupEmail"
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input
+              type="password"
+              id="signupPassword"
+              required
+              placeholder="Create a password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              required
+              placeholder="Confirm your password"
+            />
+          </div>
+          <button type="submit" class="auth-btn">Sign Up</button>
+          <p class="auth-switch">
+            Already have an account?
+            <a href="#" onclick="window.switchToLogin()">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== MUSIC PLAYER BAR ===== -->
+    <div class="player-bar" id="playerBar">
+      <div class="player-content">
+        <!-- Track Info -->
+        <div class="player-track-info">
+          <img
+            id="playerAlbumArt"
+            src=""
+            alt="Album Art"
+            class="player-album-art"
+          />
+          <div class="player-track-details">
+            <div class="player-track-title" id="playerTrackTitle">
+              No track selected
+            </div>
+            <div class="player-track-artist" id="playerTrackArtist">
+              Unknown Artist
+            </div>
+          </div>
+          <button
+            class="like-btn"
+            id="likeBtn"
+            onclick="window.toggleFavorite()"
+            title="Add to Favorites"
+          >
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="player-controls">
+          <button
+            class="player-btn"
+            id="shuffleBtn"
+            onclick="window.toggleShuffle()"
+          >
+            <i class="fas fa-random"></i>
+          </button>
+          <button
+            class="player-btn"
+            id="prevBtn"
+            onclick="window.previousTrack()"
+          >
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button
+            class="player-btn primary"
+            id="playPauseBtn"
+            onclick="window.togglePlayback()"
+          >
+            <i class="fas fa-play"></i>
+          </button>
+          <button class="player-btn" id="nextBtn" onclick="window.nextTrack()">
+            <i class="fas fa-step-forward"></i>
+          </button>
+          <button
+            class="player-btn"
+            id="repeatBtn"
+            onclick="window.toggleRepeat()"
+          >
+            <i class="fas fa-redo"></i>
+          </button>
+          
+          <!-- Responsive Volume Control for smaller screens -->
+          <div class="player-volume2" style="position: relative;">
+            <button
+              class="player-btn2"
+              id="volumeBtn2"
+              onclick="window.toggleVolumePopup()"
+            >
+              <i class="fas fa-volume-up"></i>
+            </button>
+            <div class="volume-popup2" id="volumePopup2">
+              <input
+                type="range"
+                id="volumeSlider2"
+                min="0"
+                max="100"
+                value="70"
+                class="vertical-slider"
+                onchange="window.updateVolume(this.value)"
+                oninput="window.updateVolume(this.value)"
+              />
+              <span class="volume-display" id="volumeDisplay2">70</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="player-progress">
+          <span class="time-current" id="currentTime">0:00</span>
+          <div
+            class="progress-bar"
+            id="progressBar"
+            onclick="window.seekTo(event)"
+          >
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-handle" id="progressHandle"></div>
+          </div>
+          <span class="time-total" id="totalTime">0:00</span>
+        </div>
+
+        <!-- Volume Control -->
+        <div class="player-volume">
+          <button
+            class="player-btn"
+            id="volumeBtn"
+            onclick="window.toggleMute()"
+          >
+            <i class="fas fa-volume-up"></i>
+          </button>
+          <div class="volume-slider">
+            <input
+              type="range"
+              id="volumeSlider"
+              min="0"
+              max="100"
+              value="70"
+              onchange="window.updateVolume(this.value)"
+            />
+            <span class="volume-display" id="volumeDisplay">70</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio Element -->
+      <audio id="audioPlayer" preload="metadata"></audio>
+    </div>
+
+    <!-- ===== FILE UPLOAD MODAL ===== -->
+    <div class="modal-overlay" id="uploadModalOverlay">
+      <div class="upload-modal" id="uploadModal">
+        <div class="modal-header">
+          <h2><i class="fas fa-upload"></i> Upload Music</h2>
+          <button class="modal-close" onclick="window.closeUploadModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-content">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <h3>Drag & Drop Music Files</h3>
+            <p>or click to browse</p>
+            <input
+              type="file"
+              id="fileInput"
+              multiple
+              accept=".mp3,.wav,.ogg"
+              style="display: none"
+            />
+            <button
+              class="upload-btn"
+              onclick="document.getElementById('fileInput').click()"
+            >
+              Browse Files
+            </button>
+          </div>
+        </div>
+
+        <div class="upload-progress" id="uploadProgress" style="display: none">
+          <div class="progress-bar">
+            <div class="progress-fill" id="uploadProgressFill"></div>
+          </div>
+          <span id="uploadProgressText">Uploading...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PLAYLIST MODAL ===== -->
+    <div class="modal-overlay" id="playlistModalOverlay">
+      <div class="playlist-modal" id="playlistModal">
+        <div class="modal-header">
+          <h2><i class="fas fa-plus"></i> Create New Playlist</h2>
+          <button class="modal-close" onclick="window.closePlaylistModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form class="playlist-form" id="playlistForm">
+          <div class="form-group">
+            <label for="playlistName">Playlist Name</label>
+            <input
+              type="text"
+              id="playlistName"
+              required
+              placeholder="Enter playlist name"
+              maxlength="50"
+            />
+          </div>
+          <div class="form-group">
+            <label for="playlistDescription">Description (Optional)</label>
+            <textarea
+              id="playlistDescription"
+              placeholder="Add a description for your playlist"
+              maxlength="200"
+            ></textarea>
+          </div>
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn-secondary"
+              onclick="window.closePlaylistModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary">Create Playlist</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATION ELEMENT ===== -->
+    <div class="notification" id="notification">
+      <i class="fas fa-info-circle"></i>
+      <span>Notification message</span>
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
