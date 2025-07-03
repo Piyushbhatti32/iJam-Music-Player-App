@@ -1997,7 +1997,13 @@ window.navigateToAlbum = function (albumId) {
       throw new Error("Album not found");
     }
 
-    document.getElementById("home-page").classList.remove("active");
+    // Hide all pages first
+    document.querySelectorAll(".page").forEach((page) => {
+      page.classList.remove("active");
+    });
+    
+    // Hide search results if they exist
+    hideSearchResults();
 
     let albumPage = document.getElementById("album-page");
     if (!albumPage) {
@@ -2205,14 +2211,13 @@ window.selectPlaylist = function (playlistId) {
 };
 
 function displayPlaylistPage(title, songs) {
-  // Hide home page
-  document.getElementById("home-page").classList.remove("active");
-
-  // Hide album page if open
-  const albumPage = document.getElementById("album-page");
-  if (albumPage) {
-    albumPage.classList.remove("active");
-  }
+  // Hide all pages first
+  document.querySelectorAll(".page").forEach((page) => {
+    page.classList.remove("active");
+  });
+  
+  // Hide search results if they exist
+  hideSearchResults();
 
   // Create or update playlist page
   let playlistPage = document.getElementById("playlist-page");
@@ -2745,6 +2750,18 @@ function initializeTheme() {
 // Event listeners setup
 function initializeEventListeners() {
   try {
+    // Navbar scroll effect
+    window.addEventListener("scroll", () => {
+      const navbar = document.querySelector(".navbar");
+      if (navbar) {
+        if (window.scrollY > 10) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      }
+    });
+    
     // Search functionality
     const searchInput = document.getElementById("searchInput");
     const searchButton = document.getElementById("searchButton");
@@ -3170,15 +3187,8 @@ function hideSearchResults() {
   if (searchContainer) {
     searchContainer.remove();
   }
-
-  // Show home page
-  document
-    .querySelectorAll(".page")
-    .forEach((page) => page.classList.remove("active"));
-  const homePage = document.getElementById("home-page");
-  if (homePage) {
-    homePage.classList.add("active");
-  }
+  
+  // Don't automatically show home page - let the calling function decide which page to show
 }
 
 window.clearSearch = function () {
@@ -3187,6 +3197,15 @@ window.clearSearch = function () {
     searchInput.value = "";
   }
   hideSearchResults();
+  
+  // Show home page after clearing search
+  document.querySelectorAll(".page").forEach((page) => {
+    page.classList.remove("active");
+  });
+  const homePage = document.getElementById("home-page");
+  if (homePage) {
+    homePage.classList.add("active");
+  }
 };
 
 // Playlist playback functions
