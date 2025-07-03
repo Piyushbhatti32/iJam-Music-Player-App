@@ -188,6 +188,7 @@ class CustomCarousel {
         margin-right: 20px;
         cursor: pointer;
         transition: transform 0.2s ease;
+        padding: 5px;
       `;
 
       cell.addEventListener("mouseenter", () => {
@@ -251,7 +252,7 @@ class CustomCarousel {
     if (Math.abs(deltaX) > 5) {
       e.preventDefault();
       this.track.style.transform = `translateX(${
-        -this.currentIndex * 220 + deltaX
+        -this.currentIndex * 190 + deltaX
       }px)`;
     }
   }
@@ -340,7 +341,7 @@ class CustomCarousel {
   }
 
   updateSlidePosition() {
-    const translateX = -this.currentIndex * 220;
+    const translateX = -this.currentIndex * 190;
     this.track.style.transform = `translateX(${translateX}px)`;
   }
 }
@@ -1967,12 +1968,24 @@ window.closeSidebar = function () {
 
 // Navigation functions
 window.navigateToHome = function () {
+  // Hide all pages first
+  document.querySelectorAll(".page").forEach((page) => {
+    page.classList.remove("active");
+  });
+  
+  // Show home page
   const homePage = document.getElementById("home-page");
-  const albumPage = document.getElementById("album-page");
-
-  if (homePage && albumPage) {
-    albumPage.classList.remove("active");
+  if (homePage) {
     homePage.classList.add("active");
+  }
+  
+  // Hide search results if they exist
+  hideSearchResults();
+  
+  // Hide any playlist page
+  const playlistPage = document.getElementById("playlist-page");
+  if (playlistPage && playlistPage.parentNode) {
+    playlistPage.parentNode.removeChild(playlistPage);
   }
 };
 
