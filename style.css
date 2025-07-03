@@ -138,22 +138,105 @@ body {
   min-height: 100vh;
   margin-left: 300px; /* Account for sidebar on desktop */
   padding-bottom: 5px; /* Account for player bar */
-  transition: margin-left 0.3s ease;
+  transition: all 0.3s ease;
   max-width: calc(100vw - 300px); /* Prevent overflow */
   overflow-x: hidden;
 }
 
-.page {
-  display: none;
-  animation: fadeIn 0.3s ease;
-  padding: 20px;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+/* Mobile Responsive Styles */
+@media screen and (max-width: 1160px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    max-width: 100vw;
+    padding: 0;
+  }
+
+  .page {
+    padding: 10px;
+  }
+
+  .nav {
+    position: sticky;
+  }
+
+  .navbar {
+    padding: 10px;
+  }
+
+  /* Sidebar Responsive Styles */
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    width: 100%;
+    max-width: 300px;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  /* Overlay when sidebar is open */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  /* Player Controls Responsive */
+  #playerBar {
+    padding: 10px;
+  }
+
+  .player-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .track-info {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .progress-container {
+    flex: 1 1 100%;
+    margin: 10px 0;
+  }
+
+  .volume-controls {
+    display: none; /* Hide volume on mobile */
+  }
 }
 
-.page.active {
-  display: block;
+/* Small screens */
+@media screen and (max-width: 480px) {
+  .player-controls button {
+    padding: 8px;
+  }
+
+  #playerAlbumArt {
+    width: 40px;
+    height: 40px;
+  }
+
+  .track-info {
+    font-size: 0.9em;
+  }
 }
 
 /* ===== 4. NAVIGATION BAR ===== */
@@ -2453,5 +2536,72 @@ nav h2 a {
   .player-bar {
     left: 0; /* Reset on mobile */
     padding: 8px 12px;
+  }
+}
+
+/* Album Grid Responsive */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Responsive grid adjustments */
+@media screen and (max-width: 768px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .album-card {
+    min-width: unset;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .album-card img {
+    height: 120px;
+  }
+
+  .album-card .album-info {
+    padding: 8px;
+  }
+
+  .album-card .album-title {
+    font-size: 0.9em;
+  }
+
+  .album-card .album-artist {
+    font-size: 0.8em;
+  }
+}
+
+/* Carousel Responsive */
+@media screen and (max-width: 768px) {
+  .carousel-container {
+    height: auto;
+  }
+
+  .gallery-cell {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .gallery-cell {
+    width: 160px;
+  }
+
+  .gallery-cell img {
+    height: 160px;
   }
 }
