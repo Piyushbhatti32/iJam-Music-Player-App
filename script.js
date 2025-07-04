@@ -393,14 +393,19 @@ class AppState {
       if (albumsListResponse.ok) {
         const albumsList = await albumsListResponse.json();
         console.log('📋 Found albums.json file:', albumsList);
-        
-        // Validate that the albums.json contains an albums array
+        // Accept array of album objects, {albums: [...]}, or array of strings (directory names)
         if (albumsList && Array.isArray(albumsList.albums)) {
-          console.log('✅ Using albums.json for discovery');
+          console.log('✅ Using albums.json for discovery (albums property)');
           return albumsList.albums;
         } else if (Array.isArray(albumsList)) {
-          console.log('✅ Using albums.json array for discovery');
-          return albumsList;
+          // Check if array of strings (directory names)
+          if (albumsList.length && typeof albumsList[0] === 'string') {
+            console.log('✅ Using albums.json for discovery (array of directory names)');
+            return albumsList;
+          } else {
+            console.log('✅ Using albums.json for discovery (array of album objects)');
+            return albumsList;
+          }
         } else {
           console.warn('⚠️ albums.json format invalid, expected array or {albums: []}');
         }
