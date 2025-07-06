@@ -1,3 +1,28 @@
+// Show uploaded songs list after upload modal opens or upload completes
+window.showUploadedSongsList = function () {
+  if (window.fileUploadManager) {
+    window.fileUploadManager.showUploadedSongsList();
+  }
+};
+
+// Play uploaded song from the uploaded songs list
+window.audioPlayerManager = window.audioPlayerManager || {};
+window.audioPlayerManager.playSongFromUpload = function(idx) {
+  const mgr = window.fileUploadManager;
+  if (!mgr || !mgr.uploadedSongs[idx]) return;
+  const song = mgr.uploadedSongs[idx];
+  const audio = document.getElementById('audioPlayer');
+  audio.src = song.fileUrl;
+  audio.play();
+  window.showNotification(`Playing: ${song.title} - ${song.artist}`);
+};
+
+// Show uploaded songs list when upload modal is opened
+const origOpenUploadModal = window.openUploadModal;
+window.openUploadModal = function() {
+  if (typeof origOpenUploadModal === 'function') origOpenUploadModal();
+  setTimeout(window.showUploadedSongsList, 100);
+};
 // ===== iJAM MUSIC PLAYER - MAIN SCRIPT =====
 
 // ===== GITHUB PAGES PATH UTILITIES =====
@@ -1551,6 +1576,8 @@ class AuthManager {
 
 // ===== 5. FILE UPLOAD MANAGER =====
 
+import { parseBlob } from 'music-metadata-browser';
+
 class FileUploadManager {
   constructor() {
     this.uploadedSongs = loadFromStorage(STORAGE_KEYS.UPLOADED_TRACKS) || [];
@@ -1629,36 +1656,63 @@ class FileUploadManager {
     );
   }
 
+
   async processAudioFile(file, index, total) {
-    return new Promise((resolve, reject) => {
+    // Read file as ArrayBuffer for metadata extraction
+    const arrayBuffer = await file.arrayBuffer();
+    let meta = {};
+    let coverUrl = null;
+    try {
+      meta = await parseBlob(new Blob([arrayBuffer], { type: file.type }));
+      // Extract cover art if available
+      if (meta.common.picture && meta.common.picture.length > 0) {
+        const pic = meta.common.picture[0];
+        const blob = new Blob([pic.data], { type: pic.format });
+        coverUrl = URL.createObjectURL(blob);
+      }
+    } catch (e) {
+      meta = {};
+    }
+
+    // Fallback to filename parsing if no tags
+    const fallback = this.extractMetadata(file);
+    const title = meta.common?.title || fallback.title;
+    const artist = meta.common?.artist || fallback.artist;
+    const duration = meta.format?.duration
+      ? this.formatDuration(meta.format.duration)
+      : fallback.duration;
+
+    // Read file as DataURL for playback
+    const audioUrl = await new Promise((resolve, reject) => {
       const reader = new FileReader();
-
-      reader.onload = (e) => {
-        const audioUrl = e.target.result;
-        const metadata = this.extractMetadata(file);
-
-        const song = new Song(
-          Date.now() + index,
-          metadata.title,
-          metadata.artist,
-          metadata.duration,
-          "local-uploads"
-        );
-
-        song.localFile = true;
-        song.fileUrl = audioUrl;
-        song.fileName = file.name;
-        song.fileSize = file.size;
-
-        this.uploadedSongs.push(song);
-        this.updateProgress(index, total);
-
-        resolve(song);
-      };
-
+      reader.onload = (e) => resolve(e.target.result);
       reader.onerror = () => reject(new Error("Failed to read file"));
       reader.readAsDataURL(file);
     });
+
+    const song = new Song(
+      Date.now() + index,
+      title,
+      artist,
+      duration,
+      "local-uploads"
+    );
+    song.localFile = true;
+    song.fileUrl = audioUrl;
+    song.fileName = file.name;
+    song.fileSize = file.size;
+    if (coverUrl) song.coverUrl = coverUrl;
+
+    this.uploadedSongs.push(song);
+    this.updateProgress(index, total);
+    return song;
+  }
+
+  formatDuration(seconds) {
+    if (!seconds || isNaN(seconds)) return "Unknown";
+    const min = Math.floor(seconds / 60);
+    const sec = Math.round(seconds % 60).toString().padStart(2, '0');
+    return `${min}:${sec}`;
   }
 
   extractMetadata(file) {
@@ -1680,11 +1734,34 @@ class FileUploadManager {
     }
   }
 
+  // Enhancement 6: Show uploaded songs list in UI
+  showUploadedSongsList() {
+    const list = document.getElementById('uploadedSongsList');
+    if (!list) return;
+    list.innerHTML = '';
+    this.uploadedSongs.forEach((song, idx) => {
+      const li = document.createElement('li');
+      li.className = 'uploaded-song-item';
+      li.innerHTML = `
+        <span>${song.title} - ${song.artist}</span>
+        <button onclick="window.audioPlayerManager.playSongFromUpload(${idx})">Play</button>
+        <button onclick="window.fileUploadManager.removeUploadedSong(${idx})">Remove</button>
+      `;
+      list.appendChild(li);
+    });
+  }
+
   showUploadProgress() {
     const uploadProgress = document.getElementById("uploadProgress");
     if (uploadProgress) {
       uploadProgress.style.display = "block";
     }
+  }
+
+  removeUploadedSong(idx) {
+    this.uploadedSongs.splice(idx, 1);
+    this.saveUploadedSongs();
+    this.showUploadedSongsList();
   }
 
   hideUploadProgress() {
