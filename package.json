@@ -41,7 +41,6 @@
     "clean": "rm -rf dist node_modules"
   },
   "dependencies": {
-    "music-metadata-browser": "^2.5.11",
     "vite": "^5.4.8"
   },
   "devDependencies": {

@@ -10,7 +10,7 @@
     "totalTracks": 9,
     "songs": [
         {
-            "id": 101,
+            "id": 1,
             "title": "Bekhayali Mein Bhi Tera",
             "artist": "Sachet Tandon",
             "duration": "6:11",
@@ -18,7 +18,7 @@
             "file": "1. Bekhayali Mein Bhi Tera - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 102,
+            "id": 2,
             "title": "Tujhe Kitna Chahne Lage Hum",
             "artist": "Arijit Singh",
             "duration": "4:45",
@@ -26,7 +26,7 @@
             "file": "2. Tujhe Kitna Chahne Lage Hum - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 103,
+            "id": 3,
             "title": "Bekhayali",
             "artist": "Arijit Singh",
             "duration": "6:10",
@@ -34,7 +34,7 @@
             "file": "3. Bekhayali - Kabir Singh - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 104,
+            "id": 4,
             "title": "Mere Sohneya",
             "artist": "Parampara Thakur, Sachet Tandon",
             "duration": "3:13",
@@ -42,7 +42,7 @@
             "file": "4. Mere Sohneya - Kabir Singh - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 105,
+            "id": 5,
             "title": "Kaise Hua",
             "artist": "Vishal Mishra",
             "duration": "3:55",
@@ -50,7 +50,7 @@
             "file": "5. Kaise Hua - Kabir Singh - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 106,
+            "id": 6,
             "title": "Tera Ban Jaunga",
             "artist": "Tulsi Kumar, Akhil Sachdeva",
             "duration": "3:56",
@@ -58,7 +58,7 @@
             "file": "6. Tera Ban Jaunga - Kabir Singh - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 107,
+            "id": 7,
             "title": "Yeh Aaina",
             "artist": "Shreya Ghoshal",
             "duration": "4:21",
@@ -66,7 +66,7 @@
             "file": "7. Yeh Aaina - Kabir Singh - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 108,
+            "id": 8,
             "title": "Pehla Pyaar",
             "artist": "Armaan Malik",
             "duration": "4:32",
@@ -74,7 +74,7 @@
             "file": "8. Pehla Pyaar - Kabir Singh - 320Kbps-(Mr-Jat.in).mp3"
         },
         {
-            "id": 109,
+            "id": 9,
             "title": "Tujhe Kitna Chahein Aur",
             "artist": "Jubin Nautiyal",
             "duration": "4:36",
