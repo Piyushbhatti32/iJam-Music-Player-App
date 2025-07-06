@@ -3489,10 +3489,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Load albums
     (async () => {
       try {
-        await appState.loadAlbumsFromLocalStorage();
+        let loaded = await appState.loadAlbumsFromLocalStorage();
+        if (!loaded || !Array.isArray(appState.albums) || appState.albums.length === 0) {
+          // If nothing in localStorage, load from files
+          await appState.loadLocalAlbums();
+        }
+        appState.emit("albumsLoaded", appState.albums || []);
       } catch (error) {
         console.error("❌ Failed to start album loading:", error);
-        // Emit empty albums to at least initialize the UI
         setTimeout(() => {
           appState.emit("albumsLoaded", []);
         }, 100);
